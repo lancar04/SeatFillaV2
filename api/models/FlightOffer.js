@@ -7,9 +7,19 @@ module.exports = {
   attributes: {
     type:{
       type:'string',
-      in:['fixed','auction'],
       notNull:true,
       required:true
+    },
+    ip:{
+      type:'string',
+      ip:true,
+      notNull:true,
+      required:true
+    },
+    apiKey:{
+      type:'string',
+      notNull:true,
+      required:true   
     },
     departureAirportCode:{
       type:'string',
@@ -18,7 +28,6 @@ module.exports = {
     },
     departureDateTime:{
        type:'datetime',
-       hasValidDates:true
     },
     arrivalAirportCode:{
       type:'string',
@@ -63,14 +72,13 @@ module.exports = {
     offerExpireDateTime:{
       type:'datetime',
       required:true,
-
     },
-    pets: {
-      collection: 'Bid',
+    bids: {
+      collection: 'bid',
       via: 'flightOffer'
     }
-  }, 
-  types:{
+  },
+    types:{
      hasValidDates: function(arrivalDateTime){
        const arrivalDate = new Date(arrivalDateTime);
        const departureDate = new Date(this.departureDateTime);
@@ -87,5 +95,6 @@ module.exports = {
               && ((expireDate - now) / 1000 / 60 /  60 / 24) >= 1 - threshold; //Threshold will account for network latency
      }
   }
+
 };
 
