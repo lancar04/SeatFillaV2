@@ -1,6 +1,5 @@
-
 module.exports = function(req, res, next) {
-  jwtService.verifyApiToken(req, function(err, decoded, token){
+  ApiService.verifyApiToken(req, function(err, decoded, token){
       if(err){ 
           sails.log.debug('Could not verify API token in policies/apiPolicy.js');
           return res.json({status: 401,message: err.message});
@@ -10,7 +9,7 @@ module.exports = function(req, res, next) {
       req.options.tokenPayload = decoded;
 
       ApiUsers.findOne({token:token}).exec(function(err, apiUser){
-            if(!err && apiUser.isVerified) {
+            if(!err && apiUser.isVerified && !apiUser.isBlocked) {
                  sails.log.debug('Succesfully authenticated API token in policies/apiPolicy.js');
                  return next();
             }

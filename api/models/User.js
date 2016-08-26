@@ -22,6 +22,21 @@ module.exports = {
       primaryKey:true,
       defaultsTo: function(){ return uuid.v4(); }
     },
+    facebookId:{
+      type:'string',
+      required:false,
+      notNull:false
+    },
+    twitterId:{
+      type:'string',
+      required:false,
+      notNull:false
+    },
+    googleId:{
+      type:'string',
+      required:false,
+      notNull:false
+    },
     firstName:{
       type:'string',
       required: true,
@@ -56,7 +71,7 @@ module.exports = {
     password:{
       type:'string',
       minLength:7, //8-25
-      maxLength:26
+      maxLength:61
     },
     passwordConfirmation:{
       type:'string',
@@ -85,7 +100,7 @@ module.exports = {
       integer:true,
       required:false
     },
-    isEmailConfirmed:{
+    isEmailVerified:{
       type:'boolean',
       defaultsTo:false
     },
@@ -115,6 +130,18 @@ module.exports = {
       collection: 'UserRole',
       via: 'user',
       dominant: true
+    },
+    systemNotificationUsers:{
+        collection: 'SystemNotificationUsers',
+        via: 'systemNotification'
+    },
+    notifications: {
+      collection: 'Notifications',
+      via: 'user'
+    },
+    images:{
+      collection: 'UserImage',
+      via: 'user'
     },
     emailConfirmed:()=>{
       return this.isEmailConfirmed;
